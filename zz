@@ -1,0 +1,5 @@
+1. model - user 
+2. controllers - auth , user
+3. middleware - admin, auth
+4. routes - auth, user
+5. frontend - login, register page, admin page, cart page,logout page, navbar page
