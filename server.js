@@ -11,13 +11,16 @@ const { notFound, errorHandler } = require("./middlewares/errorHandler");
 
 dotenv.config();
 
+// Connect Database
+connectDB();
+
 const app = express();
 
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// CORS
+// CORS setup
 app.use(
   cors({
     origin: process.env.CLIENT_URL || "http://localhost:5173",
@@ -25,7 +28,7 @@ app.use(
   })
 );
 
-// Test Route
+// Test route
 app.get("/", (req, res) => {
   res.send("API is running...");
 });
@@ -34,33 +37,22 @@ app.get("/", (req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 
-// Contact Routes (optional)
+// Contact Route (optional)
 try {
   const contactRoutes = require("./routes/contactRoutes");
   app.use("/api", contactRoutes);
 } catch (error) {
-  console.log("Contact route file missing, skipping...");
+  console.log("Contact routes not found, skipping...");
 }
 
-// Error Handling Middleware
+// Error Middleware
 app.use(notFound);
 app.use(errorHandler);
 
+// Port
 const PORT = process.env.PORT || 5000;
 
-// Start Server with DB connection
-const startServer = async () => {
-  try {
-    await connectDB();
-    console.log("MongoDB Connected Successfully ✅");
-
-    app.listen(PORT, () => {
-      console.log(Server running on port ${PORT} 🚀);
-    });
-  } catch (error) {
-    console.log("MongoDB Connection Failed ❌", error.message);
-    process.exit(1);
-  }
-};
-
-startServer();
+// Start Server
+app.listen(PORT, () => {
+  console.log(Server running on port ${PORT} 🚀);
+});
