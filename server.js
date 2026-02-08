@@ -6,18 +6,19 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Test Route
+// Home Route
 app.get("/", (req, res) => {
-  res.send("Server is running successfully 🚀");
+  res.send("Server is running 🚀");
 });
 
-// Example API route
+// Test API Route
 app.get("/api/test", (req, res) => {
   res.json({ message: "API is working fine ✅" });
 });
 
-const PORT = process.env.PORT || 5000;
+// Render Port Fix
+const PORT = process.env.PORT || 10000;
 
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0", () => {
   console.log(Server started on port ${PORT});
 });
